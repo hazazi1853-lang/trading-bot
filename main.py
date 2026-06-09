@@ -5,7 +5,8 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-TELEGRAM_TOKEN = "8960308840:AAE8ygz4cQZJSLjDokfRN"
+TELEGRAM_TOKEN = "8960308840:AAE8ygz4cQZJSLjDokfRNn_XDRAz-D5nJTY"
+
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
 processed_updates = set()
