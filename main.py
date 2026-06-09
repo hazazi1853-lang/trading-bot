@@ -5,8 +5,8 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-TELEGRAM_TOKEN = "8960308840:AAE8ygz4cQZJSLjDokfRNn_XDRAz-D5nJTY"
-ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+TELEGRAM_TOKEN = "8960308840:AAE8ygz4cQZJSLjDokfRN"
+ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
 processed_updates = set()
 
@@ -21,13 +21,13 @@ def analyze_chart(image_base64):
         "content-type": "application/json"
     }
     body = {
-        "model": "claude-opus-4-6",
+        "model": "claude-haiku-4-5-20251001",
         "max_tokens": 1024,
         "messages": [{
             "role": "user",
             "content": [
                 {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": image_base64}},
-                {"type": "text", "text": "أنت محلل تداول خبير. حلل هذا الشارت وأعطني:\n📊 الاتجاه: [صعود/هبوط/جانبي]\n🎯 الإشارة: [شراء/بيع/انتظار]\n💰 الدخول: [السعر]\n🛑 وقف الخسارة: [السعر]\n🎯 الهدف 1: [السعر]\n🎯 الهدف 2: [السعر]\n✅ الثقة: [النسبة]%\n📝 ملاحظة: [جملة واحدة]"}
+                {"type": "text", "text": "حلل هذا الشارت وأعطني:\n📊 الاتجاه: [صعود/هبوط/جانبي]\n🎯 الإشارة: [شراء/بيع/انتظار]\n💰 الدخول: [السعر]\n🛑 وقف الخسارة: [السعر]\n🎯 الهدف 1: [السعر]\n🎯 الهدف 2: [السعر]\n✅ الثقة: [النسبة]%\n📝 ملاحظة: [جملة واحدة]"}
             ]
         }]
     }
@@ -60,7 +60,7 @@ def telegram_webhook():
             analysis = analyze_chart(img_base64)
             send_message(chat_id, analysis)
         except Exception as e:
-            send_message(chat_id, "❌ حدث خطأ، حاول مرة ثانية")
+            send_message(chat_id, f"❌ خطأ: {str(e)}")
     return jsonify({"ok": True})
 
 @app.route("/", methods=["GET"])
